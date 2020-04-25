@@ -19,14 +19,16 @@
             <div class="mb-8">
                 <h2 class="text-lg text-gray-400 font-normal mb-3">Tasks</h2>
 
-                <div class="card mb-3">Lorem ipsum.</div>
+                @forelse ($project->tasks as $task)
 
-                <div class="card mb-3">Lorem ipsum.</div>
+                    <div class="card mb-3">{{ $task->body }}</div>
 
-                <div class="card mb-3">Lorem ipsum.</div>
+                @empty
 
-                <div class="card">Lorem ipsum.</div>
-                <!-- Tasks -->
+                    <div>No tasks yet.</div>
+
+                @endforelse
+
             </div>
 
             <div>

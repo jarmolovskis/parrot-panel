@@ -30,4 +30,17 @@ class ProjectTest extends TestCase
 
         $this->assertInstanceOf('App\User', $project->owner);
     }
+
+    /** @test */
+    public function it_can_add_a_task()
+    {
+
+        $project = factory('App\Project')->create();
+
+        $task = $project->addTask('Test task`s text');
+
+        $this->assertCount(1, $project->tasks);
+
+        $this->assertTrue($project->tasks->contains($task));
+    }
 }
