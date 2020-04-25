@@ -13946,6 +13946,10 @@ video {
   transition-duration: 1000ms;
 }
 
+.container {
+  padding: 0 1rem;
+}
+
 .button {
   background-color: #47cdff;
   color: #fff;
@@ -13957,6 +13961,17 @@ video {
   padding-left: 1.25rem;
   padding-right: 1.25rem;
   box-shadow: 0 2px 7px 0 #b0eaff;
+}
+
+.card {
+  background-color: #fff;
+  padding: 1.25rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.07);
+}
+
+.navbar-brand img {
+  height: 45px;
 }
 
 @media (min-width: 640px) {
