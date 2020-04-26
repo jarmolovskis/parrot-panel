@@ -36,6 +36,24 @@ class ProjectTasksTest extends TestCase
         $this->assertDatabaseMissing('tasks', ['body' => 'Test task']);
     }
 
+
+    /** @test */
+    public function only_the_owner_of_a_project_may_update_a_task()
+    {
+        $this->signIn();
+        
+
+        $project = factory('App\Project')->create();
+
+        $task = $project->addTask('New task`s test text');
+
+        $this->patch($task->path(), ['body' => 'Updated Test task`s text'])
+
+            ->assertStatus(403);
+
+        $this->assertDatabaseMissing('tasks', ['body' => 'Updated Test task`s text']);
+    }
+
     
     /** @test */
     public function a_project_can_have_tasks()
@@ -53,6 +71,35 @@ class ProjectTasksTest extends TestCase
 
         $this->get($project->path())
             ->assertSee('Test task`s text');
+    }
+
+
+    
+
+
+    /** @test */
+    public function a_task_can_be_updated()
+    {
+        $this->withoutExceptionHandling();
+
+        $this->signIn();
+
+        $project = auth()->user()->projects()->create(
+            factory(Project::class)->raw()
+        );
+
+        $task = $project->addTask('Test tasks text');
+        
+        $this->patch($project->path() . '/tasks/' . $task->id, [
+            'body' => 'Updated tasks text',
+            'completed' => true
+        ]);
+
+        $this->assertDatabaseHas('tasks', [
+            'body' => 'Updated tasks text',
+            'completed' => true
+        ]);
+
     }
 
     /** @test */
