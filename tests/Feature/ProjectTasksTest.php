@@ -14,6 +14,30 @@ class ProjectTasksTest extends TestCase
 
 
     /** @test */
+    public function guests_cannot_add_tasks_to_projects()
+    {
+        $project = factory('App\Project')->create();
+
+        $this->post($project->path() . '/tasks')->assertRedirect('login');
+    }
+
+
+    /** @test */
+    public function only_the_owner_of_a_project_may_add_task()
+    {
+        $this->signIn();
+
+        $project = factory('App\Project')->create();
+
+        $this->post($project->path() . '/tasks', ['body' => 'Test task`s text'])
+
+            ->assertStatus(403);
+
+        $this->assertDatabaseMissing('tasks', ['body' => 'Test task']);
+    }
+
+    
+    /** @test */
     public function a_project_can_have_tasks()
     {
 
